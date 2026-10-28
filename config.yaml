@@ -1,0 +1,80 @@
+project:
+  name: KSA_NFI_GeoAI_Pipeline_V4
+  scope: national_KSA
+  case_study: Aseer_Asir_validation_only
+  random_seed: 42
+  plots_per_su: 5
+
+# Paths relative to project root (folder with this config.yaml).
+# Colab: git-clone to /content/NFI_KSA_Colab_V4 OR Drive MyDrive/NFI_Asir_Colab_V4
+paths:
+  workspace: .
+  clean_data: data/cleansed
+  asir_su: data/shapefile/Asir_NFI_Shapefiles/Asir_SU_Final.shp
+  asir_grid: data/shapefile/Asir_NFI_Shapefiles/Asir_Grid_15_30_Final.shp
+  output_root: outputs
+  reference_findings: data/docs
+  calculation_docx: data/docs/NFI_ KSA Calculation_Trees&shrubs.docx
+
+tables:
+  su: data/cleansed/nfi_of_ksa_program_su.xlsx
+  plot: data/cleansed/plot.xlsx
+  trees: data/cleansed/trees.xlsx
+  shrubs: data/cleansed/shrubs_bushes.xlsx
+  lucs: data/cleansed/lucs1.xlsx
+  regeneration: data/cleansed/regeneration1.xlsx
+
+columns:
+  su_id_in_su_master: su_no
+  su_id_in_child: nfi_of_ksa_program_su_su_no
+  plot_id: plot_id1
+  region_en: su_group_region_e
+  dbh: tree_dbh
+  height: tree_height
+  lat: plot_info1_plot_coor1_y
+  lon: plot_info1_plot_coor1_x
+
+# Optional Asir validation package (GIS frame). National analysis does NOT require these to match.
+aseer_gate_expected:
+  total_sus: 430
+  sus_with_trees: 240
+  sus_no_trees: 190
+  expected_plots: 2150
+  plots_with_trees: 656
+  gate2_plots: 544
+
+tree_biomass:
+  form_factor: 0.65
+  wood_density: 0.6
+  bef: 2.0
+  root_shoot: 0.28
+  carbon_fraction: 0.47
+  co2eq_factor: 3.67
+  plot_area_m2: 1000
+  conversion_factor_ha: 10
+
+shrub_biomass:
+  root_shoot: 0.28
+  carbon_fraction: 0.47
+  conversion_factor_ha: 10
+  log_base: natural
+  a: -0.37
+  b_cd: 1.903
+  b_h: 0.652
+  intercept_add: 1.403
+  scale: 1000.0
+
+exclusions:
+  tree_species_substrings:
+    - calotropis
+    - palm
+    - grass
+  shrub_exclude_substrings:
+    - grass
+
+policy:
+  remote_height_imputation: false
+  anti_clip: true
+  design_based_estimates: false
+  carbon_label: provisional
+  scope: national
